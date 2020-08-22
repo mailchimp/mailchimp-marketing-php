@@ -360,7 +360,7 @@ class AutomationsApi
         );
     }
 
-    public function list($fields = null, $exclude_fields = null, $before_create_time = null, $since_create_time = null, $before_send_time = null, $since_send_time = null, $status = null)
+    public function mailchimp_list($fields = null, $exclude_fields = null, $before_create_time = null, $since_create_time = null, $before_send_time = null, $since_send_time = null, $status = null)
     {
         $response = $this->listWithHttpInfo($fields, $exclude_fields, $before_create_time, $since_create_time, $before_send_time, $since_send_time, $status);
         return $response;

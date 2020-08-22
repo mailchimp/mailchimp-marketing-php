@@ -58,7 +58,7 @@ class ConversationsApi
         return $this->config;
     }
 
-    public function list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $has_unread_messages = null, $list_id = null, $campaign_id = null)
+    public function mailchimp_list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $has_unread_messages = null, $list_id = null, $campaign_id = null)
     {
         $response = $this->listWithHttpInfo($fields, $exclude_fields, $count, $offset, $has_unread_messages, $list_id, $campaign_id);
         return $response;

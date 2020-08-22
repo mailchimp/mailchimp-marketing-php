@@ -58,7 +58,7 @@ class AuthorizedAppsApi
         return $this->config;
     }
 
-    public function list($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
+    public function mailchimp_list($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
     {
         $response = $this->listWithHttpInfo($fields, $exclude_fields, $count, $offset);
         return $response;

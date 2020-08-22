@@ -360,7 +360,7 @@ class CampaignsApi
         );
     }
 
-    public function list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $status = null, $before_send_time = null, $since_send_time = null, $before_create_time = null, $since_create_time = null, $list_id = null, $folder_id = null, $member_id = null, $sort_field = null, $sort_dir = null)
+    public function mailchimp_list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $type = null, $status = null, $before_send_time = null, $since_send_time = null, $before_create_time = null, $since_create_time = null, $list_id = null, $folder_id = null, $member_id = null, $sort_field = null, $sort_dir = null)
     {
         $response = $this->listWithHttpInfo($fields, $exclude_fields, $count, $offset, $type, $status, $before_send_time, $since_send_time, $before_create_time, $since_create_time, $list_id, $folder_id, $member_id, $sort_field, $sort_dir);
         return $response;

@@ -58,7 +58,7 @@ class FacebookAdsApi
         return $this->config;
     }
 
-    public function list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null, $sort_dir = null)
+    public function mailchimp_list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $sort_field = null, $sort_dir = null)
     {
         $response = $this->listWithHttpInfo($fields, $exclude_fields, $count, $offset, $sort_field, $sort_dir);
         return $response;

@@ -202,7 +202,7 @@ class TemplatesApi
         );
     }
 
-    public function list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $created_by = null, $since_created_at = null, $before_created_at = null, $type = null, $category = null, $folder_id = null, $sort_field = null)
+    public function mailchimp_list($fields = null, $exclude_fields = null, $count = '10', $offset = '0', $created_by = null, $since_created_at = null, $before_created_at = null, $type = null, $category = null, $folder_id = null, $sort_field = null)
     {
         $response = $this->listWithHttpInfo($fields, $exclude_fields, $count, $offset, $created_by, $since_created_at, $before_created_at, $type, $category, $folder_id, $sort_field);
         return $response;
