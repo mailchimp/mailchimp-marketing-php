@@ -244,7 +244,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.removeSegmentMember** | /lists/{list_id}/segments/{segment_id}/members/{subscriber_hash} |
 | **lists.deleteListWebhook** | /lists/{list_id}/webhooks/{webhook_id} |
 | **lists.getListMemberTags** | /lists/{list_id}/members/{subscriber_hash}/tags |
-| [**lists.getAllLists**](#lists.getAllLists) | /lists |
+| [**lists.getAllLists**](#listsgetalllists) | /lists |
 | **lists.getList** | /lists/{list_id} |
 | **lists.getListAbuseReports** | /lists/{list_id}/abuse-reports |
 | **lists.getListAbuseReportDetails** | /lists/{list_id}/abuse-reports/{report_id} |
