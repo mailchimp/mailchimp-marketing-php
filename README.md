@@ -252,7 +252,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.getListClients** | /lists/{list_id}/clients |
 | **lists.getListGrowthHistory** | /lists/{list_id}/growth-history |
 | **lists.getListGrowthHistoryByMonth** | /lists/{list_id}/growth-history/{month} |
-| **lists.getListInterestCategories** | /lists/{list_id}/interest-categories |
+| [**lists.getListInterestCategories**](#listsgetlistinterestcategories) | /lists/{list_id}/interest-categories |
 | **lists.getInterestCategory** | /lists/{list_id}/interest-categories/{interest_category_id} |
 | **lists.listInterestCategoryInterests** | /lists/{list_id}/interest-categories/{interest_category_id}/interests |
 | **lists.getInterestCategoryInterest** | /lists/{list_id}/interest-categories/{interest_category_id}/interests/{interest_id} |
@@ -356,6 +356,17 @@ $response = $mailchimp->lists->getAllLists();
 foreach ($response->lists as $list) {
   $list_id = $list->id;
   $list_name = $list->name;
+  ...
+}
+```
+
+### lists.getListInterestCategories
+
+```
+$response = $mailchimp->lists->getListInterestCategories($list_id);
+foreach ($response->categories as $category) {
+  $category_id = $category->id;
+  $category_title = $category->title;
   ...
 }
 ```
