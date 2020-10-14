@@ -344,7 +344,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **verifiedDomains.submitDomainVerification** | /verified-domains/{domain_name}/actions/verify |
 
 
-## Additional Client Libraries
+## Additional Libraries
 
 Mailchimp Marketing libraries are available in the following languages:
 
