@@ -245,7 +245,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.deleteListWebhook** | /lists/{list_id}/webhooks/{webhook_id} |
 | **lists.getListMemberTags** | /lists/{list_id}/members/{subscriber_hash}/tags |
 | [**lists.getAllLists**](#listsgetalllists) | /lists |
-| **lists.getList** | /lists/{list_id} |
+| [**lists.getList**](#listsgetlist) | /lists/{list_id} |
 | **lists.getListAbuseReports** | /lists/{list_id}/abuse-reports |
 | **lists.getListAbuseReportDetails** | /lists/{list_id}/abuse-reports/{report_id} |
 | **lists.getListRecentActivity** | /lists/{list_id}/activity |
@@ -356,6 +356,19 @@ $response = $mailchimp->lists->getAllLists();
 foreach ($response->lists as $list) {
   $list_id = $list->id;
   $list_name = $list->name;
+  ...
+}
+```
+
+### lists.getList
+
+```
+$list_id = '7f4f516be';
+$response = $mailchimp->lists->getList($list_id);
+if ($response->lists && is_array($response->lists) && count($response->lists)) {
+  $list = reset($response);
+  $list_id = $response->id;
+  $list_name = $response->name;
   ...
 }
 ```
