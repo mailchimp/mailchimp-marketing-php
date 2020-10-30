@@ -367,8 +367,8 @@ $list_id = '7f4f516be';
 $response = $mailchimp->lists->getList($list_id);
 if ($response->lists && is_array($response->lists) && count($response->lists)) {
   $list = reset($response);
-  $list_id = $response->id;
-  $list_name = $response->name;
+  $list_id = $list->id;
+  $list_name = $list->name;
   ...
 }
 ```
