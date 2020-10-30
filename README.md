@@ -295,7 +295,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.createSegmentMember** | /lists/{list_id}/segments/{segment_id}/members |
 | **lists.updateListSignupForm** | /lists/{list_id}/signup-forms |
 | **lists.createListWebhook** | /lists/{list_id}/webhooks |
-| **lists.listSegments** | /lists/{list_id}/segments |
+| [**lists.listSegments**](#listslistsegments) | /lists/{list_id}/segments |
 | **lists.previewSegment** | /lists/{list_id}/preview-segment |
 | **lists.setListMember** | /lists/{list_id}/members/{subscriber_hash} |
 | **ping.get** | /ping |
@@ -364,9 +364,8 @@ foreach ($response->lists as $list) {
 
 ```
 $list_id = '7f4f516be';
-$response = $mailchimp->lists->getList($list_id);
-if ($response->lists && is_array($response->lists) && count($response->lists)) {
-  $list = reset($response);
+$list = $mailchimp->lists->getList($list_id);
+if ($list) {
   $list_id = $list->id;
   $list_name = $list->name;
   ...
@@ -381,6 +380,21 @@ foreach ($response->categories as $category) {
   $category_id = $category->id;
   $category_title = $category->title;
   ...
+}
+```
+
+### lists.listSegments
+
+```
+$list_id = '7f4f516be';
+$response = $mailchimp->lists->listSegments($list_id);
+if ($response) {
+  foreach ($response->segments as $segment) {
+    $segment_id = $segment->id;
+    $segment_name = $segment->name;
+    $segment_member_count = $segment->member_count;
+    $segment_list_id = $segment->list_id;
+  }
 }
 ```
 
