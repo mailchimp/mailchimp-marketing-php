@@ -240,7 +240,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.deleteListMember** | /lists/{list_id}/members/{subscriber_hash} |
 | **lists.deleteListMemberNote** | /lists/{list_id}/members/{subscriber_hash}/notes/{note_id} |
 | **lists.deleteListMergeField** | /lists/{list_id}/merge-fields/{merge_id} |
-| **lists.deleteSegment** | /lists/{list_id}/segments/{segment_id} |
+| [**lists.deleteSegment**](#listsdeletesegment) | /lists/{list_id}/segments/{segment_id} |
 | **lists.removeSegmentMember** | /lists/{list_id}/segments/{segment_id}/members/{subscriber_hash} |
 | **lists.deleteListWebhook** | /lists/{list_id}/webhooks/{webhook_id} |
 | **lists.getListMemberTags** | /lists/{list_id}/members/{subscriber_hash}/tags |
@@ -290,7 +290,7 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.deleteListMemberPermanent** | /lists/{list_id}/members/{subscriber_hash}/actions/delete-permanent |
 | **lists.createListMemberNote** | /lists/{list_id}/members/{subscriber_hash}/notes |
 | **lists.addListMergeField** | /lists/{list_id}/merge-fields |
-| **lists.createSegment** | /lists/{list_id}/segments |
+| [**lists.createSegment**](#listscreatesegment) | /lists/{list_id}/segments |
 | **lists.batchSegmentMembers** | /lists/{list_id}/segments/{segment_id} |
 | **lists.createSegmentMember** | /lists/{list_id}/segments/{segment_id}/members |
 | **lists.updateListSignupForm** | /lists/{list_id}/signup-forms |
@@ -348,6 +348,24 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **verifiedDomains.submitDomainVerification** | /verified-domains/{domain_name}/actions/verify |
 
 ## Examples
+
+### lists.createSegment
+
+```
+// Create tag (static).
+$segment = $mailchimp->lists->createSegment($list_id, '{"name":"Tag 1","static_segment":[]}');
+// Create segment (dynamic tag).
+$segment = $mailchimp->lists->createSegment($list_id, '{"name":"Segment 2","options":{"match":"any","conditions":[]}}');
+```
+
+### lists.deleteSegment
+
+```
+$segment_id = $segment->id;
+$segment_list_id = $segment->list_id;
+
+$mailchimp->lists->deleteSegment($segment_list_id, $segment_id);
+```
 
 ### lists.getAllLists
 
