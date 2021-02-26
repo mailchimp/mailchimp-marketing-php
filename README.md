@@ -48,6 +48,8 @@ require_once('/path/to/MailchimpMarketing/vendor/autoload.php');
 
 ## Quick Start
 
+### Note that this SDK requires PHP 7.2 or above.
+
 ```php
 require_once('/path/to/MailchimpMarketing/vendor/autoload.php');
 
