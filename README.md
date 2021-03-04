@@ -355,7 +355,8 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 // Create tag (static).
 $segment = $mailchimp->lists->createSegment($list_id, '{"name":"Tag 1","static_segment":[]}');
 // Create segment (dynamic tag).
-$segment = $mailchimp->lists->createSegment($list_id, '{"name":"Segment 2","options":{"match":"any","conditions":[]}}');
+$segment = $mailchimp->lists->createSegment($list_id, 
+  '{"name":"Segment 2","options":{"match":"any","conditions":[]}}');
 ```
 
 ### lists.deleteSegment
@@ -405,7 +406,10 @@ foreach ($response->categories as $category) {
 
 ```
 $list_id = '7f4f516be';
+// Load up to 10 tags.
 $response = $mailchimp->lists->listSegments($list_id);
+// Load up to 200 tags.
+$response = $mailchimp->lists->listSegments($list_id, NULL, NULL, '200');
 if ($response) {
   foreach ($response->segments as $segment) {
     $segment_id = $segment->id;
