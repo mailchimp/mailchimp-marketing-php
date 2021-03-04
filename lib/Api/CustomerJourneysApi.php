@@ -1,7 +1,7 @@
 <?php
 
 /**
- * ActivityFeedApi
+ * CustomerJourneysApi
  * PHP version 5
  *
  * @category Class
@@ -40,7 +40,7 @@ use MailchimpMarketing\Configuration;
 use MailchimpMarketing\HeaderSelector;
 use MailchimpMarketing\ObjectSerializer;
 
-class ActivityFeedApi
+class CustomerJourneysApi
 {
     protected $client;
     protected $config;
@@ -62,15 +62,15 @@ class ActivityFeedApi
         return $this->config;
     }
 
-    public function getChimpChatter($count = '10', $offset = '0')
+    public function trigger($journey_id, $step_id, $body)
     {
-        $response = $this->getChimpChatterWithHttpInfo($count, $offset);
+        $response = $this->triggerWithHttpInfo($journey_id, $step_id, $body);
         return $response;
     }
 
-    public function getChimpChatterWithHttpInfo($count = '10', $offset = '0')
+    public function triggerWithHttpInfo($journey_id, $step_id, $body)
     {
-        $request = $this->getChimpChatterRequest($count, $offset);
+        $request = $this->triggerRequest($journey_id, $step_id, $body);
 
         try {
             $options = $this->createHttpClientOption();
@@ -106,31 +106,56 @@ class ActivityFeedApi
         }
     }
 
-    protected function getChimpChatterRequest($count = '10', $offset = '0')
+    protected function triggerRequest($journey_id, $step_id, $body)
     {
-        if ($count !== null && $count > 1000) {
-            throw new \InvalidArgumentException('invalid value for "$count" when calling ActivityFeedApi., must be smaller than or equal to 1000.');
+        // verify the required parameter 'journey_id' is set
+        if ($journey_id === null || (is_array($journey_id) && count($journey_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $journey_id when calling '
+            );
+        }
+        // verify the required parameter 'step_id' is set
+        if ($step_id === null || (is_array($step_id) && count($step_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $step_id when calling '
+            );
+        }
+        // verify the required parameter 'body' is set
+        if ($body === null || (is_array($body) && count($body) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $body when calling '
+            );
         }
 
-
-        $resourcePath = '/activity-feed/chimp-chatter';
+        $resourcePath = '/customer-journeys/journeys/{journey_id}/steps/{step_id}/actions/trigger';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
-        // query params
-        if ($count !== null) {
-            $queryParams['count'] = ObjectSerializer::toQueryValue($count);
-        }
-        // query params
-        if ($offset !== null) {
-            $queryParams['offset'] = ObjectSerializer::toQueryValue($offset);
-        }
 
+        // path params
+        if ($journey_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'journey_id' . '}',
+                ObjectSerializer::toPathValue($journey_id),
+                $resourcePath
+            );
+        }
+        // path params
+        if ($step_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'step_id' . '}',
+                ObjectSerializer::toPathValue($step_id),
+                $resourcePath
+            );
+        }
 
         // body params
         $_tempBody = null;
+        if (isset($body)) {
+            $_tempBody = $body;
+        }
 
         if ($multipart) {
             $headers = $this->headerSelector->selectHeadersForMultipart(
@@ -198,7 +223,7 @@ class ActivityFeedApi
 
         $query = \GuzzleHttp\Psr7\build_query($queryParams);
         return new Request(
-            'GET',
+            'POST',
             $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
             $headers,
             $httpBody
