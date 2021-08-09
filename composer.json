@@ -1,6 +1,6 @@
 {
     "name": "mailchimp/marketing",
-    "version": "3.0.56",
+    "version": "3.0.57",
     "description": "",
     "keywords": [
         "swagger",
@@ -21,7 +21,7 @@
         "ext-curl": "*",
         "ext-json": "*",
         "ext-mbstring": "*",
-        "guzzlehttp/psr7": "<2.0",
+        "guzzlehttp/psr7": "^1.7 || ^2.0",
         "guzzlehttp/guzzle": "^7.2"
     },
     "require-dev": {
