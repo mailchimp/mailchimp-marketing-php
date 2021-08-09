@@ -246,19 +246,19 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.deleteListMember** | /lists/{list_id}/members/{subscriber_hash} |
 | **lists.deleteListMemberNote** | /lists/{list_id}/members/{subscriber_hash}/notes/{note_id} |
 | **lists.deleteListMergeField** | /lists/{list_id}/merge-fields/{merge_id} |
-| **lists.deleteSegment** | /lists/{list_id}/segments/{segment_id} |
+| [**lists.deleteSegment**](#listsdeletesegment) | /lists/{list_id}/segments/{segment_id} |
 | **lists.removeSegmentMember** | /lists/{list_id}/segments/{segment_id}/members/{subscriber_hash} |
 | **lists.deleteListWebhook** | /lists/{list_id}/webhooks/{webhook_id} |
 | **lists.getListMemberTags** | /lists/{list_id}/members/{subscriber_hash}/tags |
-| **lists.getAllLists** | /lists |
-| **lists.getList** | /lists/{list_id} |
+| [**lists.getAllLists**](#listsgetalllists) | /lists |
+| [**lists.getList**](#listsgetlist) | /lists/{list_id} |
 | **lists.getListAbuseReports** | /lists/{list_id}/abuse-reports |
 | **lists.getListAbuseReportDetails** | /lists/{list_id}/abuse-reports/{report_id} |
 | **lists.getListRecentActivity** | /lists/{list_id}/activity |
 | **lists.getListClients** | /lists/{list_id}/clients |
 | **lists.getListGrowthHistory** | /lists/{list_id}/growth-history |
 | **lists.getListGrowthHistoryByMonth** | /lists/{list_id}/growth-history/{month} |
-| **lists.getListInterestCategories** | /lists/{list_id}/interest-categories |
+| [**lists.getListInterestCategories**](#listsgetlistinterestcategories) | /lists/{list_id}/interest-categories |
 | **lists.getInterestCategory** | /lists/{list_id}/interest-categories/{interest_category_id} |
 | **lists.listInterestCategoryInterests** | /lists/{list_id}/interest-categories/{interest_category_id}/interests |
 | **lists.getInterestCategoryInterest** | /lists/{list_id}/interest-categories/{interest_category_id}/interests/{interest_id} |
@@ -296,12 +296,12 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **lists.deleteListMemberPermanent** | /lists/{list_id}/members/{subscriber_hash}/actions/delete-permanent |
 | **lists.createListMemberNote** | /lists/{list_id}/members/{subscriber_hash}/notes |
 | **lists.addListMergeField** | /lists/{list_id}/merge-fields |
-| **lists.createSegment** | /lists/{list_id}/segments |
+| [**lists.createSegment**](#listscreatesegment) | /lists/{list_id}/segments |
 | **lists.batchSegmentMembers** | /lists/{list_id}/segments/{segment_id} |
 | **lists.createSegmentMember** | /lists/{list_id}/segments/{segment_id}/members |
 | **lists.updateListSignupForm** | /lists/{list_id}/signup-forms |
 | **lists.createListWebhook** | /lists/{list_id}/webhooks |
-| **lists.listSegments** | /lists/{list_id}/segments |
+| [**lists.listSegments**](#listslistsegments) | /lists/{list_id}/segments |
 | **lists.setListMember** | /lists/{list_id}/members/{subscriber_hash} |
 | **lists.tagSearch** | /lists/{list_id}/tag-search |
 | **ping.get** | /ping |
@@ -352,6 +352,78 @@ All URIs are relative to *https://server.api.mailchimp.com/3.0*
 | **verifiedDomains.getVerifiedDomainsAll** | /verified-domains |
 | **verifiedDomains.submitDomainVerification** | /verified-domains/{domain_name}/actions/verify |
 
+## Examples
+
+### lists.createSegment
+
+```
+// Create tag (static).
+$segment = $mailchimp->lists->createSegment($list_id, '{"name":"Tag 1","static_segment":[]}');
+// Create segment (dynamic tag).
+$segment = $mailchimp->lists->createSegment($list_id, 
+  '{"name":"Segment 2","options":{"match":"any","conditions":[]}}');
+```
+
+### lists.deleteSegment
+
+```
+$segment_id = $segment->id;
+$segment_list_id = $segment->list_id;
+
+$mailchimp->lists->deleteSegment($segment_list_id, $segment_id);
+```
+
+### lists.getAllLists
+
+```
+$response = $mailchimp->lists->getAllLists();
+foreach ($response->lists as $list) {
+  $list_id = $list->id;
+  $list_name = $list->name;
+  ...
+}
+```
+
+### lists.getList
+
+```
+$list_id = '7f4f516be';
+$list = $mailchimp->lists->getList($list_id);
+if ($list) {
+  $list_id = $list->id;
+  $list_name = $list->name;
+  ...
+}
+```
+
+### lists.getListInterestCategories
+
+```
+$response = $mailchimp->lists->getListInterestCategories($list_id);
+foreach ($response->categories as $category) {
+  $category_id = $category->id;
+  $category_title = $category->title;
+  ...
+}
+```
+
+### lists.listSegments
+
+```
+$list_id = '7f4f516be';
+// Load up to 10 tags.
+$response = $mailchimp->lists->listSegments($list_id);
+// Load up to 200 tags.
+$response = $mailchimp->lists->listSegments($list_id, NULL, NULL, '200');
+if ($response) {
+  foreach ($response->segments as $segment) {
+    $segment_id = $segment->id;
+    $segment_name = $segment->name;
+    $segment_member_count = $segment->member_count;
+    $segment_list_id = $segment->list_id;
+  }
+}
+```
 
 ## Additional Libraries
 
