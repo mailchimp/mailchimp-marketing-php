@@ -1,7 +1,7 @@
 <?php
 
 /**
- * PingApi
+ * AccountExportApi
  * PHP version 5
  *
  * @category Class
@@ -41,7 +41,7 @@ use MailchimpMarketing\Configuration;
 use MailchimpMarketing\HeaderSelector;
 use MailchimpMarketing\ObjectSerializer;
 
-class PingApi
+class AccountExportApi
 {
     protected $client;
     protected $config;
@@ -63,15 +63,15 @@ class PingApi
         return $this->config;
     }
 
-    public function get()
+    public function getAccountExports($export_id, $fields = null, $exclude_fields = null)
     {
-        $response = $this->getWithHttpInfo();
+        $response = $this->getAccountExportsWithHttpInfo($export_id, $fields, $exclude_fields);
         return $response;
     }
 
-    public function getWithHttpInfo()
+    public function getAccountExportsWithHttpInfo($export_id, $fields = null, $exclude_fields = null)
     {
-        $request = $this->getRequest();
+        $request = $this->getAccountExportsRequest($export_id, $fields, $exclude_fields);
 
         try {
             $options = $this->createHttpClientOption();
@@ -107,16 +107,44 @@ class PingApi
         }
     }
 
-    protected function getRequest()
+    protected function getAccountExportsRequest($export_id, $fields = null, $exclude_fields = null)
     {
+        // verify the required parameter 'export_id' is set
+        if ($export_id === null || (is_array($export_id) && count($export_id) === 0)) {
+            throw new \InvalidArgumentException(
+                'Missing the required parameter $export_id when calling '
+            );
+        }
 
-        $resourcePath = '/ping';
+        $resourcePath = '/account-exports/{export_id}';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
+        // query params
+        if (is_array($fields)) {
+            $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
+        } else
+        if ($fields !== null) {
+            $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
+        }
+        // query params
+        if (is_array($exclude_fields)) {
+            $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
+        } else
+        if ($exclude_fields !== null) {
+            $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
+        }
 
+        // path params
+        if ($export_id !== null) {
+            $resourcePath = str_replace(
+                '{' . 'export_id' . '}',
+                ObjectSerializer::toPathValue($export_id),
+                $resourcePath
+            );
+        }
 
         // body params
         $_tempBody = null;

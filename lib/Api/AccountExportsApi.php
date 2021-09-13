@@ -1,7 +1,7 @@
 <?php
 
 /**
- * CustomerJourneysApi
+ * AccountExportsApi
  * PHP version 5
  *
  * @category Class
@@ -41,7 +41,7 @@ use MailchimpMarketing\Configuration;
 use MailchimpMarketing\HeaderSelector;
 use MailchimpMarketing\ObjectSerializer;
 
-class CustomerJourneysApi
+class AccountExportsApi
 {
     protected $client;
     protected $config;
@@ -63,15 +63,15 @@ class CustomerJourneysApi
         return $this->config;
     }
 
-    public function trigger($journey_id, $step_id, $body)
+    public function listAccountExports($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
     {
-        $response = $this->triggerWithHttpInfo($journey_id, $step_id, $body);
+        $response = $this->listAccountExportsWithHttpInfo($fields, $exclude_fields, $count, $offset);
         return $response;
     }
 
-    public function triggerWithHttpInfo($journey_id, $step_id, $body)
+    public function listAccountExportsWithHttpInfo($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
     {
-        $request = $this->triggerRequest($journey_id, $step_id, $body);
+        $request = $this->listAccountExportsRequest($fields, $exclude_fields, $count, $offset);
 
         try {
             $options = $this->createHttpClientOption();
@@ -107,20 +107,165 @@ class CustomerJourneysApi
         }
     }
 
-    protected function triggerRequest($journey_id, $step_id, $body)
+    protected function listAccountExportsRequest($fields = null, $exclude_fields = null, $count = '10', $offset = '0')
     {
-        // verify the required parameter 'journey_id' is set
-        if ($journey_id === null || (is_array($journey_id) && count($journey_id) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $journey_id when calling '
+        if ($count !== null && $count > 1000) {
+            throw new \InvalidArgumentException('invalid value for "$count" when calling AccountExportsApi., must be smaller than or equal to 1000.');
+        }
+
+
+        $resourcePath = '/account-exports';
+        $formParams = [];
+        $queryParams = [];
+        $headerParams = [];
+        $httpBody = '';
+        $multipart = false;
+        // query params
+        if (is_array($fields)) {
+            $queryParams['fields'] = ObjectSerializer::serializeCollection($fields, 'csv');
+        } else
+        if ($fields !== null) {
+            $queryParams['fields'] = ObjectSerializer::toQueryValue($fields);
+        }
+        // query params
+        if (is_array($exclude_fields)) {
+            $queryParams['exclude_fields'] = ObjectSerializer::serializeCollection($exclude_fields, 'csv');
+        } else
+        if ($exclude_fields !== null) {
+            $queryParams['exclude_fields'] = ObjectSerializer::toQueryValue($exclude_fields);
+        }
+        // query params
+        if ($count !== null) {
+            $queryParams['count'] = ObjectSerializer::toQueryValue($count);
+        }
+        // query params
+        if ($offset !== null) {
+            $queryParams['offset'] = ObjectSerializer::toQueryValue($offset);
+        }
+
+
+        // body params
+        $_tempBody = null;
+
+        if ($multipart) {
+            $headers = $this->headerSelector->selectHeadersForMultipart(
+                ['application/json', 'application/problem+json']
+            );
+        } else {
+            $headers = $this->headerSelector->selectHeaders(
+                ['application/json', 'application/problem+json'],
+                ['application/json']
             );
         }
-        // verify the required parameter 'step_id' is set
-        if ($step_id === null || (is_array($step_id) && count($step_id) === 0)) {
-            throw new \InvalidArgumentException(
-                'Missing the required parameter $step_id when calling '
-            );
+
+        // for model (json/xml)
+        if (isset($_tempBody)) {
+            $httpBody = $_tempBody;
+
+            if($headers['Content-Type'] === 'application/json') {
+                if ($httpBody instanceof \stdClass) {
+                    $httpBody = \GuzzleHttp\json_encode($httpBody);
+                }
+                if (is_array($httpBody)) {
+                    $httpBody = \GuzzleHttp\json_encode(ObjectSerializer::sanitizeForSerialization($httpBody));
+                }
+            }
+        } elseif (count($formParams) > 0) {
+            if ($multipart) {
+                $multipartContents = [];
+                foreach ($formParams as $formParamName => $formParamValue) {
+                    $multipartContents[] = [
+                        'name' => $formParamName,
+                        'contents' => $formParamValue
+                    ];
+                }
+                $httpBody = new MultipartStream($multipartContents);
+
+            } elseif ($headers['Content-Type'] === 'application/json') {
+                $httpBody = \GuzzleHttp\json_encode($formParams);
+
+            } else {
+                $httpBody = Query::build($formParams);
+            }
         }
+
+
+        // Basic Authentication
+        if (!empty($this->config->getUsername()) && !empty($this->config->getPassword())) {
+            $headers['Authorization'] = 'Basic ' . base64_encode($this->config->getUsername() . ":" . $this->config->getPassword());
+        }
+
+        // OAuth Authentication
+        if (!empty($this->config->getAccessToken())) {
+            $headers['Authorization'] = 'Bearer ' . $this->config->getAccessToken();
+        }
+
+        $defaultHeaders = [];
+        if ($this->config->getUserAgent()) {
+            $defaultHeaders['User-Agent'] = $this->config->getUserAgent();
+        }
+
+        $headers = array_merge(
+            $defaultHeaders,
+            $headerParams,
+            $headers
+        );
+
+        $query = Query::build($queryParams);
+        return new Request(
+            'GET',
+            $this->config->getHost() . $resourcePath . ($query ? "?{$query}" : ''),
+            $headers,
+            $httpBody
+        );
+    }
+
+    public function createAccountExport($body)
+    {
+        $response = $this->createAccountExportWithHttpInfo($body);
+        return $response;
+    }
+
+    public function createAccountExportWithHttpInfo($body)
+    {
+        $request = $this->createAccountExportRequest($body);
+
+        try {
+            $options = $this->createHttpClientOption();
+            try {
+                $response = $this->client->send($request, $options);
+            } catch (RequestException $e) {
+                throw $e;
+            }
+
+            $statusCode = $response->getStatusCode();
+
+            if ($statusCode < 200 || $statusCode > 299) {
+                throw new ApiException(
+                    sprintf(
+                        '[%d] Error connecting to the API (%s)',
+                        $statusCode,
+                        $request->getUri()
+                    ),
+                    $statusCode,
+                    $response->getHeaders(),
+                    $response->getBody()
+                );
+            }
+
+            $responseBody = $response->getBody();
+            $content = $responseBody->getContents();
+            $content = json_decode($content);
+
+            return $content;
+
+        } catch (ApiException $e) {
+            throw $e->getResponseBody();
+        }
+    }
+
+    protected function createAccountExportRequest($body)
+    {
         // verify the required parameter 'body' is set
         if ($body === null || (is_array($body) && count($body) === 0)) {
             throw new \InvalidArgumentException(
@@ -128,29 +273,13 @@ class CustomerJourneysApi
             );
         }
 
-        $resourcePath = '/customer-journeys/journeys/{journey_id}/steps/{step_id}/actions/trigger';
+        $resourcePath = '/account-exports';
         $formParams = [];
         $queryParams = [];
         $headerParams = [];
         $httpBody = '';
         $multipart = false;
 
-        // path params
-        if ($journey_id !== null) {
-            $resourcePath = str_replace(
-                '{' . 'journey_id' . '}',
-                ObjectSerializer::toPathValue($journey_id),
-                $resourcePath
-            );
-        }
-        // path params
-        if ($step_id !== null) {
-            $resourcePath = str_replace(
-                '{' . 'step_id' . '}',
-                ObjectSerializer::toPathValue($step_id),
-                $resourcePath
-            );
-        }
 
         // body params
         $_tempBody = null;
